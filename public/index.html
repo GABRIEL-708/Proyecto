@@ -23,6 +23,9 @@
 
     <!-- Estilos de la PWA -->
     <link rel="stylesheet" href="/css/styles.css">
+
+    <!-- Librería de Mapa Interactivo (Leaflet OpenStreetMap) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 </head>
 <body>
 
@@ -102,11 +105,11 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="coordenadas">Coordenadas GPS del Sitio</label>
+                        <label for="coordenadas">Ubicación y Coordenadas GPS del Sitio</label>
                         <div class="gps-group">
-                            <input type="text" id="coordenadas" placeholder="Ej. 16.8924, -96.7214">
-                            <button type="button" id="btnGps" class="btn-gps" title="Obtener coordenadas desde los satélites del teléfono">
-                                📍 GPS
+                            <input type="text" id="coordenadas" placeholder="Ej. 16.89240, -96.72140" title="Haz clic para abrir el mapa interactivo">
+                            <button type="button" id="btnOpenMap" class="btn-gps" title="Abrir mapa interactivo para señalar el punto exacto">
+                                🗺️ Mapa & GPS
                             </button>
                         </div>
                     </div>
@@ -171,8 +174,54 @@
         </div>
     </div>
 
+    <!-- MODAL DE MAPA INTERACTIVO (OPENSTREETMAP / LEAFLET) -->
+    <div id="mapModal" class="modal-overlay" role="dialog" aria-modal="true" style="display: none;">
+        <div class="modal-content map-modal-content">
+            <div class="map-modal-header">
+                <div>
+                    <h3>🗺️ Ubicación del Servicio Técnico</h3>
+                    <p>Busca un lugar o haz clic en el mapa para fijar el pin exacto de la maquinaria.</p>
+                </div>
+                <button type="button" id="btnCloseMap" class="btn-close-modal" aria-label="Cerrar modal">✕</button>
+            </div>
+
+            <!-- Buscador y GPS -->
+            <div class="map-search-bar">
+                <input type="text" id="mapSearchInput" placeholder="🔍 Escribe rancho, poblado, municipio o calle...">
+                <button type="button" id="btnMapSearch" class="btn-map-action">Buscar</button>
+                <button type="button" id="btnMapCurrentGps" class="btn-map-action btn-gps-accent" title="Centrar en mi GPS satelital">📍 Mi GPS</button>
+            </div>
+
+            <!-- Visor del Mapa -->
+            <div id="leafletMap" class="map-viewport"></div>
+
+            <!-- Datos de Coordenadas Seleccionadas -->
+            <div class="map-selected-info">
+                <div class="map-info-item">
+                    <span class="info-label">📍 Coordenadas fijadas:</span>
+                    <strong id="selectedCoordsDisplay">16.89240, -96.72140</strong>
+                </div>
+                <div class="map-info-item" id="selectedAddressContainer" style="display: none;">
+                    <span class="info-label">🏷️ Referencia detectada:</span>
+                    <span id="selectedAddressDisplay" class="address-text">Buscando nombre del sitio...</span>
+                </div>
+            </div>
+
+            <!-- Acciones -->
+            <div class="map-modal-footer">
+                <button type="button" id="btnCancelMap" class="btn-dismiss">Cancelar</button>
+                <button type="button" id="btnConfirmLocation" class="btn-install" style="flex: 1;">
+                    ✅ Confirmar y Usar Esta Ubicación
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- NOTIFICACIONES TOAST FLOTANTES -->
     <div id="toast" role="status" aria-live="polite"></div>
+
+    <!-- Librería de Mapa Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 
     <!-- Scripts de la Aplicación (IndexedDB y Lógica Core PWA) -->
     <script src="/js/db.js"></script>

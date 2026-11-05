@@ -164,3 +164,4 @@ window.TechFieldDB = {
     eliminarReporteLocal,
     contarReportesPendientes
 };
+

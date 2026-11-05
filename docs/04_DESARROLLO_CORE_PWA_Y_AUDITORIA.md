@@ -151,3 +151,4 @@ La aplicación fue auditada exhaustivamente mediante la herramienta oficial **Go
 Para cumplir con la entrega final y el requerimiento de HTTPS nativo en la nube, el proyecto incluye los archivos de configuración listos para despliegue automatizado:
 * **Vercel (`vercel.json`):** Serveless API y hosting estático con certificados SSL automáticos.
 * **Netlify (`netlify.toml`):** Reglas de redirección de SPA y encabezados de Service Worker.
+

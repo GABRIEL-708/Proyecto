@@ -152,30 +152,194 @@ function configurarInstalacionPWA() {
 }
 
 // ========================================================
-// 4. CAPTURA DE COORDENADAS GPS DEL SITIO
+// 4. MAPA INTERACTIVO Y CAPTURA GPS (LEAFLET & OPENSTREETMAP)
 // ========================================================
-function obtenerCoordenadasGPS() {
-    const inputGps = document.getElementById('coordenadas');
-    if (!('geolocation' in navigator)) {
-        showToast('La geolocalización no está soportada en tu navegador', 'error');
+let leafletMap = null;
+let leafletMarker = null;
+let selectedLat = 16.89240;
+let selectedLng = -96.72140;
+let selectedLocationName = '';
+
+function inicializarMapaInteractivo() {
+    if (typeof L === 'undefined') {
+        console.warn('[Mapa] Librería Leaflet no disponible en este momento.');
         return;
     }
 
-    inputGps.placeholder = 'Obteniendo satélites GPS...';
+    if (leafletMap) return; // Ya inicializado
+
+    const mapElement = document.getElementById('leafletMap');
+    if (!mapElement) return;
+
+    // Crear mapa centrado en coordenadas iniciales
+    leafletMap = L.map('leafletMap').setView([selectedLat, selectedLng], 14);
+
+    // Capa de mosaicos OpenStreetMap
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(leafletMap);
+
+    // Marcador arrastrable (Pin)
+    leafletMarker = L.marker([selectedLat, selectedLng], { draggable: true }).addTo(leafletMap);
+
+    // Clic en cualquier punto del mapa para mover el pin
+    leafletMap.on('click', (e) => {
+        actualizarPinMapa(e.latlng.lat, e.latlng.lng);
+    });
+
+    // Evento al arrastrar y soltar el marcador
+    leafletMarker.on('dragend', (e) => {
+        const pos = e.target.getLatLng();
+        actualizarPinMapa(pos.lat, pos.lng);
+    });
+
+    // Intentar geolocalizar automáticamente al abrir por primera vez
+    if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition((pos) => {
+            selectedLat = pos.coords.latitude;
+            selectedLng = pos.coords.longitude;
+            if (leafletMap) {
+                leafletMap.setView([selectedLat, selectedLng], 15);
+                actualizarPinMapa(selectedLat, selectedLng);
+            }
+        }, () => {}, { timeout: 4000 });
+    }
+}
+
+function abrirModalMapa() {
+    const modal = document.getElementById('mapModal');
+    modal.style.display = 'flex';
+
+    setTimeout(() => {
+        inicializarMapaInteractivo();
+        if (leafletMap) {
+            leafletMap.invalidateSize();
+        }
+    }, 150);
+}
+
+function cerrarModalMapa() {
+    document.getElementById('mapModal').style.display = 'none';
+}
+
+function actualizarPinMapa(lat, lng) {
+    selectedLat = lat;
+    selectedLng = lng;
+    if (leafletMarker) {
+        leafletMarker.setLatLng([lat, lng]);
+    }
+
+    const displayCoords = document.getElementById('selectedCoordsDisplay');
+    if (displayCoords) {
+        displayCoords.innerText = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+    }
+
+    // Geocodificación inversa con OpenStreetMap Nominatim
+    if (navigator.onLine) {
+        const addressContainer = document.getElementById('selectedAddressContainer');
+        const addressDisplay = document.getElementById('selectedAddressDisplay');
+        addressContainer.style.display = 'flex';
+        addressDisplay.innerText = 'Consultando satélite...';
+
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=16`, {
+            headers: { 'Accept-Language': 'es' }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data && data.display_name) {
+                const partes = data.display_name.split(',').map(s => s.trim());
+                selectedLocationName = partes.slice(0, 3).join(', ');
+                addressDisplay.innerText = selectedLocationName;
+            } else {
+                selectedLocationName = '';
+                addressContainer.style.display = 'none';
+            }
+        })
+        .catch(() => {
+            selectedLocationName = '';
+            addressContainer.style.display = 'none';
+        });
+    }
+}
+
+function buscarEnMapa() {
+    const query = document.getElementById('mapSearchInput').value.trim();
+    if (!query) {
+        showToast('Escribe el nombre de un lugar o poblado a buscar', 'warning');
+        return;
+    }
+
+    if (!navigator.onLine) {
+        showToast('La búsqueda de lugares por texto requiere conexión a internet', 'warning');
+        return;
+    }
+
+    const btnSearch = document.getElementById('btnMapSearch');
+    btnSearch.innerText = 'Buscando...';
+
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`, {
+        headers: { 'Accept-Language': 'es' }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data && data.length > 0) {
+            const lat = parseFloat(data[0].lat);
+            const lng = parseFloat(data[0].lon);
+            if (leafletMap) {
+                leafletMap.flyTo([lat, lng], 16);
+                actualizarPinMapa(lat, lng);
+            }
+            showToast('✓ Ubicación encontrada');
+        } else {
+            showToast('No se encontró el lugar. Puedes hacer clic directo en el mapa.', 'warning');
+        }
+    })
+    .catch(err => {
+        showToast('Error al buscar: ' + err.message, 'error');
+    })
+    .finally(() => {
+        btnSearch.innerText = 'Buscar';
+    });
+}
+
+function centrarGpsEnMapa() {
+    if (!('geolocation' in navigator)) {
+        showToast('Tu dispositivo no soporta GPS', 'error');
+        return;
+    }
+
+    const btnGps = document.getElementById('btnMapCurrentGps');
+    btnGps.innerText = 'Localizando...';
+
     navigator.geolocation.getCurrentPosition(
-        (position) => {
-            const lat = position.coords.latitude.toFixed(5);
-            const lng = position.coords.longitude.toFixed(5);
-            inputGps.value = `${lat}, ${lng}`;
-            showToast('📍 Coordenadas GPS fijadas correctamente');
+        (pos) => {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+            if (leafletMap) {
+                leafletMap.flyTo([lat, lng], 16);
+                actualizarPinMapa(lat, lng);
+            }
+            showToast('📍 Centrado en tu ubicación GPS actual');
+            btnGps.innerText = '📍 Mi GPS';
         },
-        (error) => {
-            console.error('Error GPS:', error);
-            inputGps.placeholder = 'Ej. 16.8924, -96.7214 (Manual)';
-            showToast('No se pudo obtener el GPS: ' + error.message, 'warning');
+        (err) => {
+            showToast('No se pudo obtener el GPS: ' + err.message, 'warning');
+            btnGps.innerText = '📍 Mi GPS';
         },
         { enableHighAccuracy: true, timeout: 8000 }
     );
+}
+
+function confirmarUbicacionSeleccionada() {
+    const inputCoordenadas = document.getElementById('coordenadas');
+    const valorFinal = selectedLocationName 
+        ? `${selectedLat.toFixed(5)}, ${selectedLng.toFixed(5)} (${selectedLocationName})`
+        : `${selectedLat.toFixed(5)}, ${selectedLng.toFixed(5)}`;
+
+    inputCoordenadas.value = valorFinal;
+    cerrarModalMapa();
+    showToast('📍 Ubicación guardada para el reporte');
 }
 
 // ========================================================
@@ -424,8 +588,45 @@ function configurarEventosUI() {
     // Formulario de envío
     document.getElementById('formReporte').addEventListener('submit', procesarEnvioReporte);
 
-    // Botón GPS
-    document.getElementById('btnGps').addEventListener('click', obtenerCoordenadasGPS);
+    // Botón para abrir el Mapa interactivo
+    const btnOpenMap = document.getElementById('btnOpenMap');
+    if (btnOpenMap) {
+        btnOpenMap.addEventListener('click', abrirModalMapa);
+    }
+
+    const inputCoords = document.getElementById('coordenadas');
+    if (inputCoords) {
+        inputCoords.addEventListener('click', abrirModalMapa);
+    }
+
+    // Botones de cierre del modal de mapa
+    const btnCloseMap = document.getElementById('btnCloseMap');
+    if (btnCloseMap) btnCloseMap.addEventListener('click', cerrarModalMapa);
+
+    const btnCancelMap = document.getElementById('btnCancelMap');
+    if (btnCancelMap) btnCancelMap.addEventListener('click', cerrarModalMapa);
+
+    // Buscador dentro del mapa
+    const btnMapSearch = document.getElementById('btnMapSearch');
+    if (btnMapSearch) btnMapSearch.addEventListener('click', buscarEnMapa);
+
+    const mapSearchInput = document.getElementById('mapSearchInput');
+    if (mapSearchInput) {
+        mapSearchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                buscarEnMapa();
+            }
+        });
+    }
+
+    // Botón GPS dentro del mapa
+    const btnMapCurrentGps = document.getElementById('btnMapCurrentGps');
+    if (btnMapCurrentGps) btnMapCurrentGps.addEventListener('click', centrarGpsEnMapa);
+
+    // Botón confirmar ubicación del mapa
+    const btnConfirmLocation = document.getElementById('btnConfirmLocation');
+    if (btnConfirmLocation) btnConfirmLocation.addEventListener('click', confirmarUbicacionSeleccionada);
 
     // Botón sincronizar ahora
     document.getElementById('btnSync').addEventListener('click', sincronizarPendientes);
@@ -486,3 +687,4 @@ function escapeHtml(text) {
     };
     return text.toString().replace(/[&<>"']/g, m => map[m]);
 }
+

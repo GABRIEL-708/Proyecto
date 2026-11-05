@@ -1,5 +1,19 @@
 [
   {
+    "id": "LOCAL-285215",
+    "cliente": "Pedro",
+    "tipoEquipo": "Bomba de agua",
+    "prioridad": "Media",
+    "falla": "Falla cableado",
+    "diagnostico": "Cableado",
+    "coordenadas": "21.00441, -89.38807",
+    "tecnico": "Ing. Técnico UTM",
+    "fecha": "2026-11-05T19:01:25.215Z",
+    "sincronizado": false,
+    "estado": "Sincronizado",
+    "sincronizadoEn": "2026-11-05T19:01:23.446Z"
+  },
+  {
     "cliente": "Pedro Gomez",
     "tipoEquipo": "Transformador",
     "prioridad": "Media",

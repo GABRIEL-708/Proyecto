@@ -208,3 +208,4 @@ self.addEventListener('sync', (event) => {
         );
     }
 });
+
