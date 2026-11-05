@@ -1,0 +1,60 @@
+[
+  {
+    "cliente": "Pedro Gomez",
+    "tipoEquipo": "Transformador",
+    "prioridad": "Media",
+    "falla": "fallas de luz",
+    "tecnico": "Técnico de Campo UTM",
+    "fecha": "2026-10-29T17:03:04.234Z",
+    "id": "REP-2026-004",
+    "estado": "Sincronizado",
+    "sincronizadoEn": "2026-10-29T17:03:04.237Z"
+  },
+  {
+    "cliente": "pedro sanchez",
+    "tipoEquipo": "transformador",
+    "prioridad": "Media",
+    "falla": "fallas en el suministro de luz",
+    "tecnico": "Técnico de Campo UTM",
+    "fecha": "2026-10-28T19:19:18.530Z",
+    "id": "REP-2026-003",
+    "estado": "Sincronizado",
+    "sincronizadoEn": "2026-10-28T19:19:18.783Z"
+  },
+  {
+    "id": "REP-2026-001",
+    "cliente": "Rancho Santa María",
+    "contacto": "+52 951 123 4567",
+    "tipoEquipo": "Bomba de Riego Sumergible 5HP",
+    "numeroSerie": "BRS-8842-X",
+    "prioridad": "Alta",
+    "estado": "Sincronizado",
+    "falla": "Disparo constante de protección térmica en arrancador magnético.",
+    "diagnostico": "Bobinado recalentado por fluctuación de voltaje en línea monofásica.",
+    "coordenadas": {
+      "latitud": 16.8924,
+      "longitud": -96.7214
+    },
+    "tecnico": "Ing. Carlos Mendoza",
+    "fecha": "2026-10-24T14:30:00.000Z",
+    "sincronizadoEn": "2026-10-24T14:30:00.000Z"
+  },
+  {
+    "id": "REP-2026-002",
+    "cliente": "Cooperativa Agrícola El Valle",
+    "contacto": "+52 951 987 6543",
+    "tipoEquipo": "Generador Diésel Trifásico 20kW",
+    "numeroSerie": "GEN-5510-D",
+    "prioridad": "Urgente",
+    "estado": "Sincronizado",
+    "falla": "Fuga de combustible en línea de inyección número 2 y bajo voltaje de salida.",
+    "diagnostico": "O-ring de sello fracturado y regulador AVR descalibrado.",
+    "coordenadas": {
+      "latitud": 16.915,
+      "longitud": -96.689
+    },
+    "tecnico": "Ing. María Fernanda Ruiz",
+    "fecha": "2026-10-25T10:15:00.000Z",
+    "sincronizadoEn": "2026-10-25T10:15:00.000Z"
+  }
+]

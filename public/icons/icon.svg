@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e40af"/>
+    </linearGradient>
+    <linearGradient id="wrench" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="gear" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="110" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="140" fill="none" stroke="url(#gear)" stroke-width="26" stroke-dasharray="24 16"/>
+  <circle cx="256" cy="256" r="60" fill="none" stroke="url(#gear)" stroke-width="18"/>
+  <path d="M190 322 L322 190 M310 178 L334 202" stroke="url(#wrench)" stroke-width="32" stroke-linecap="round"/>
+  <path d="M236 170 L286 240 L256 250 L276 342 L226 272 L256 262 Z" fill="#fef08a"/>
+</svg>

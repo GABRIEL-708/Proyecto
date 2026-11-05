@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <title>Sin Conexión - TechField PWA</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 1rem;
+            padding: 2.5rem 1.75rem;
+            max-width: 440px;
+            width: 100%;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+        }
+        .icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 1.5rem;
+            background: rgba(239, 68, 68, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ef4444;
+            font-size: 2.5rem;
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #ffffff;
+        }
+        p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 0.85rem 1.5rem;
+            background: #2563eb;
+            color: white;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #1d4ed8;
+        }
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.85rem;
+            background: #334155;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="icon">📡</div>
+        <div class="status-pill">
+            <span class="dot"></span> Modo Fuera de Línea Activo
+        </div>
+        <h1>Sin Conexión a Internet</h1>
+        <p>Te encuentras en una zona rural sin cobertura de red. TechField está diseñado con arquitectura <strong>Offline-First</strong> para que sigas trabajando.</p>
+        <p>Todos los reportes que generes se guardarán de manera segura en tu dispositivo y se enviarán automáticamente a la oficina central cuando vuelvas a tener señal.</p>
+        <button class="btn" onclick="window.location.href='/'">Volver a la Aplicación Principal</button>
+    </div>
+</body>
+</html>

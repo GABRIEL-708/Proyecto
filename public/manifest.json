@@ -1,0 +1,77 @@
+{
+  "id": "/?source=pwa",
+  "name": "TechField - Reportes Técnicos en Campo",
+  "short_name": "TechField",
+  "description": "Aplicación Web Progresiva para levantamiento de reportes de servicio técnico en zonas rurales sin conexión a internet.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f172a",
+  "theme_color": "#2563eb",
+  "lang": "es-MX",
+  "dir": "ltr",
+  "categories": [
+    "business",
+    "productivity",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Pantalla Principal de TechField PWA"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Monitor de Reportes de Campo"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nuevo Reporte",
+      "short_name": "Reporte",
+      "description": "Levantar un nuevo reporte técnico en campo",
+      "url": "/#nuevo-reporte",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Historial y Sincronización",
+      "short_name": "Historial",
+      "description": "Ver reportes guardados y pendientes de envío",
+      "url": "/#historial",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

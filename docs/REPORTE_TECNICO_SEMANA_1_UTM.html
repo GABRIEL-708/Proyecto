@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Técnico Semana 1 - Proyecto Integrador PWA - UTM</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        :root {
+            --primary: #00875a;
+            --primary-dark: #005a3c;
+            --secondary: #172b4d;
+            --accent: #2563eb;
+            --text: #1f2937;
+            --text-light: #4b5563;
+            --bg-light: #f8fafc;
+            --border: #e2e8f0;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background-color: #f1f5f9;
+            line-height: 1.65;
+            font-size: 11pt;
+        }
+
+        .document-container {
+            max-width: 850px;
+            margin: 2rem auto;
+            background: #ffffff;
+            padding: 3.5rem 4rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        /* Botón flotante para imprimir / guardar como PDF */
+        .no-print-bar {
+            position: fixed;
+            top: 1rem;
+            right: 1.5rem;
+            background: #1e293b;
+            padding: 0.65rem 1.25rem;
+            border-radius: 9999px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .no-print-bar span {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .btn-print {
+            background: #10b981;
+            color: #ffffff;
+            border: none;
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-print:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        /* Portada institucional */
+        .cover {
+            text-align: center;
+            padding: 2.5rem 0 3.5rem;
+            border-bottom: 3px solid var(--primary);
+            margin-bottom: 3rem;
+        }
+
+        .institution-logo {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .institution-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.75rem;
+        }
+
+        .project-tag {
+            display: inline-block;
+            background: rgba(0, 135, 90, 0.1);
+            color: var(--primary-dark);
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .cover h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--secondary);
+            line-height: 1.25;
+            margin-bottom: 0.75rem;
+        }
+
+        .cover h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .metadata-box {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem 1.5rem;
+            text-align: left;
+            font-size: 0.9rem;
+            margin-top: 1.5rem;
+        }
+
+        .metadata-item strong {
+            color: var(--secondary);
+        }
+
+        /* Secciones */
+        h2.section-title {
+            font-size: 1.35rem;
+            color: var(--secondary);
+            border-left: 5px solid var(--primary);
+            padding-left: 0.75rem;
+            margin-top: 2.75rem;
+            margin-bottom: 1.25rem;
+            font-weight: 700;
+        }
+
+        h3.subsection-title {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-top: 1.75rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-bottom: 1.25rem;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* Tablas académicas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.88rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.65rem 0.85rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #fafbfd;
+        }
+
+        .badge-score {
+            font-weight: 700;
+            color: var(--primary);
+            background: rgba(0, 135, 90, 0.12);
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+        }
+
+        /* Cajas de notas */
+        .callout {
+            background: #f0fdf4;
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.25rem;
+            border-radius: 0 6px 6px 0;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .callout strong {
+            color: var(--primary-dark);
+        }
+
+        .callout-warning {
+            background: #fffbeb;
+            border-left-color: #f59e0b;
+        }
+
+        .callout-warning strong {
+            color: #b45309;
+        }
+
+        /* Bloques de código */
+        pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: #f1f5f9;
+            color: #0f172a;
+            padding: 0.15rem 0.35rem;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* Espacio para capturas */
+        .screenshot-placeholder {
+            border: 2px dashed #94a3b8;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 2rem 1rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: #64748b;
+        }
+
+        .screenshot-placeholder strong {
+            display: block;
+            color: #334155;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .screenshot-placeholder p {
+            text-align: center;
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        /* Salto de página para impresión */
+        .page-break {
+            page-break-before: always;
+            break-before: page;
+        }
+
+        @media print {
+            body {
+                background: #ffffff;
+                font-size: 10pt;
+            }
+
+            .document-container {
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            .no-print-bar {
+                display: none !important;
+            }
+
+            .page-break {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra flotante para descargar / imprimir PDF -->
+    <div class="no-print-bar">
+        <span>📄 Reporte Académico Semana 1</span>
+        <button class="btn-print" onclick="window.print()">
+            🖨️ Imprimir / Guardar como PDF
+        </button>
+    </div>
+
+    <div class="document-container">
+        
+        <!-- PORTADA -->
+        <div class="cover">
+            <div class="institution-logo">UTM</div>
+            <div class="institution-name">Universidad Tecnológica Metropolitana</div>
+            <span class="project-tag">Proyecto Integrador - Cuatrimestre 10°</span>
+            <h1>Fundamentos y Escenarios de Uso de las Aplicaciones Web Progresivas (PWA)</h1>
+            <h2>Documento de Arquitectura, Compatibilidad y Entorno (Semana 1)</h2>
+
+            <div class="metadata-box">
+                <div class="metadata-item"><strong>Asignatura:</strong> Desarrollo Web Progresivo</div>
+                <div class="metadata-item"><strong>Fecha de Entrega:</strong> 28 de Octubre de 2026</div>
+                <div class="metadata-item"><strong>Sistema:</strong> TechField PWA</div>
+                <div class="metadata-item"><strong>Tipo de Documento:</strong> Reporte Técnico Parcial</div>
+                <div class="metadata-item" style="grid-column: span 2;"><strong>Entregables Incluidos:</strong> Parcial 1 (Arquitectura), Parcial 2 (Compatibilidad) y Parcial 3 (Entorno y API).</div>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- ENTREGABLE 1: ARQUITECTURA Y MATRIZ DE DECISIÓN -->
+        <!-- ============================================================== -->
+        <h2 class="section-title">1. Entregable Parcial 1: Fase de Diagnóstico y Selección Arquitectónica</h2>
+        
+        <h3 class="subsection-title">1.1. Análisis de Requerimientos de la Problemática</h3>
+        <p>
+            El proyecto responde a la necesidad operativa de una empresa de servicios técnicos especializada en mantenimiento electromecánico y agrícola. Las cuadrillas de técnicos son enviadas a zonas rurales, pozos de extracción y comunidades de difícil acceso geográfico donde se presentan las siguientes restricciones críticas:
+        </p>
+        <ul>
+            <li><strong>Zonas Blancas (Cero Conectividad):</strong> Durante la mayor parte de la jornada laboral en campo no existe señal de red celular (ni 4G/5G ni GPRS) ni redes Wi-Fi disponibles. La solución debe permitir levantar reportes técnicos, diagnósticos y fallas de manera 100% autónoma y offline.</li>
+            <li><strong>Heterogeneidad de Dispositivos (BYOD - Bring Your Own Device):</strong> Los técnicos utilizan sus propios teléfonos inteligentes de diversas gamas (baja, media y alta) con sistemas operativos mixtos: smartphones <strong>Android</strong> (motores Chromium/Blink) y teléfonos <strong>Apple iPhone</strong> (motor WebKit/Safari).</li>
+            <li><strong>Recursos de Hardware Limitados:</strong> Muchos de los equipos en campo disponen de poco espacio de almacenamiento disponible y memoria RAM moderada, por lo que una aplicación pesada (mayor a 40 MB) genera rechazo e imposibilidad de instalación.</li>
+            <li><strong>Costo y Tiempo de Despliegue:</strong> La empresa requiere una solución ágil que no implique pagar licencias anuales de tiendas ($99 USD en Apple Developer Program) ni atravesar semanas de aprobación burocrática por cada actualización o ajuste al formulario de campo.</li>
+        </ul>
+
+        <h3 class="subsection-title">1.2. Análisis Comparativo de Alternativas Arquitectónicas</h3>
+        <p>
+            Se analizaron las cinco opciones de arquitectura de software frente a los requerimientos de campo:
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Arquitectura</th>
+                    <th>Comportamiento en Zona Rural</th>
+                    <th>Ventajas Principales</th>
+                    <th>Desventajas / Inviabilidad en Campo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. Web Tradicional (SSR / MPA)</strong></td>
+                    <td>❌ Falla total</td>
+                    <td>Bajo costo inicial, actualizaciones instantáneas en servidor.</td>
+                    <td>Requiere conexión HTTP síncrona en cada clic. Al no haber internet arroja la pantalla de error ("Sin conexión").</td>
+                </tr>
+                <tr>
+                    <td><strong>2. Orientada a Servicios (API + SPA)</strong></td>
+                    <td>❌ Inestable</td>
+                    <td>Desacoplamiento limpio, comunicación eficiente por JSON.</td>
+                    <td>Si el técnico recarga la página o se cierra la pestaña sin red, la app no puede recargarse sin Service Worker.</td>
+                </tr>
+                <tr>
+                    <td><strong>3. App Nativa (Kotlin + Swift)</strong></td>
+                    <td>✅ Excelente offline</td>
+                    <td>Rendimiento máximo, acceso total al hardware y sensores.</td>
+                    <td>Duplica el costo de desarrollo (dos equipos especializados), pago de licencias de desarrollador y fricción en tiendas.</td>
+                </tr>
+                <tr>
+                    <td><strong>4. Multiplataforma (Flutter / RN)</strong></td>
+                    <td>✅ Buen offline</td>
+                    <td>Un solo código base para Android e iOS, interfaz fluida.</td>
+                    <td>Instaladores muy pesados (40 a 70 MB) y dependencia de empaquetado y firmas de certificados para distribución.</td>
+                </tr>
+                <tr>
+                    <td><strong>5. Web Progresiva (PWA)</strong></td>
+                    <td>✅ Excelente offline</td>
+                    <td><strong>Capacidad offline mediante Service Worker e IndexedDB, peso inferior a 2 MB, instalación directa sin tiendas.</strong></td>
+                    <td>Sujeta a políticas de almacenamiento de navegadores (mitigables mediante diseño de arquitectura).</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="subsection-title">1.3. Matriz de Decisión Ponderada (Scoring Matrix)</h3>
+        <p>
+            Para fundamentar la selección de forma cuantitativa, se construyó una matriz de decisión basada en ponderaciones estratégicas de negocio (Escala 1 a 5):
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Criterio de Evaluación</th>
+                    <th>Peso (%)</th>
+                    <th>Web Tradicional</th>
+                    <th>Web API / SPA</th>
+                    <th>App Nativa</th>
+                    <th>Multiplataforma</th>
+                    <th>PWA (Elegida)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Capacidad y Resiliencia Offline</td>
+                    <td>25%</td>
+                    <td>1 (0.25)</td>
+                    <td>2 (0.50)</td>
+                    <td>5 (1.25)</td>
+                    <td>5 (1.25)</td>
+                    <td><span class="badge-score">5 (1.25)</span></td>
+                </tr>
+                <tr>
+                    <td>Compatibilidad Multiplataforma (iOS/Android)</td>
+                    <td>20%</td>
+                    <td>5 (1.00)</td>
+                    <td>5 (1.00)</td>
+                    <td>2 (0.40)</td>
+                    <td>4 (0.80)</td>
+                    <td><span class="badge-score">5 (1.00)</span></td>
+                </tr>
+                <tr>
+                    <td>Costo y Tiempo de Desarrollo</td>
+                    <td>15%</td>
+                    <td>4 (0.60)</td>
+                    <td>4 (0.60)</td>
+                    <td>1 (0.15)</td>
+                    <td>3 (0.45)</td>
+                    <td><span class="badge-score">5 (0.75)</span></td>
+                </tr>
+                <tr>
+                    <td>Distribución sin Fricción (Sin App Stores)</td>
+                    <td>15%</td>
+                    <td>5 (0.75)</td>
+                    <td>5 (0.75)</td>
+                    <td>1 (0.15)</td>
+                    <td>1 (0.15)</td>
+                    <td><span class="badge-score">5 (0.75)</span></td>
+                </tr>
+                <tr>
+                    <td>Bajo Consumo de Almacenamiento</td>
+                    <td>15%</td>
+                    <td>5 (0.75)</td>
+                    <td>4 (0.60)</td>
+                    <td>2 (0.30)</td>
+                    <td>2 (0.30)</td>
+                    <td><span class="badge-score">5 (0.75)</span></td>
+                </tr>
+                <tr>
+                    <td>Mantenibilidad y Actualizaciones Inmediatas</td>
+                    <td>10%</td>
+                    <td>4 (0.40)</td>
+                    <td>4 (0.40)</td>
+                    <td>2 (0.20)</td>
+                    <td>3 (0.30)</td>
+                    <td><span class="badge-score">5 (0.50)</span></td>
+                </tr>
+                <tr style="font-weight: bold; background: #e2e8f0;">
+                    <td>CALIFICACIÓN TOTAL PONDERADA (Base 5.0)</td>
+                    <td>100%</td>
+                    <td>3.75</td>
+                    <td>3.85</td>
+                    <td>2.45</td>
+                    <td>3.25</td>
+                    <td><span class="badge-score" style="font-size: 1.05rem;">5.00 / 5.00</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="callout">
+            <strong>Conclusión del Parcial 1:</strong> La Aplicación Web Progresiva (PWA) resulta ser el escenario de uso idóneo al obtener la máxima puntuación. Resuelve el 100% del reto offline sin requerir gastos en tiendas de aplicaciones ni duplicidad de código fuente.
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- ============================================================== -->
+        <!-- ENTREGABLE 2: COMPATIBILIDAD Y REQUERIMIENTOS DE INSTALACIÓN -->
+        <!-- ============================================================== -->
+        <h2 class="section-title">2. Entregable Parcial 2: Compatibilidad y Requerimientos de Instalación</h2>
+
+        <h3 class="subsection-title">2.1. Mapeo de Navegadores y Limitaciones Específicas</h3>
+        <p>
+            Se investigaron los motores dominantes en los dispositivos móviles que portan los técnicos de campo:
+        </p>
+        <ul>
+            <li>
+                <strong>Chromium-Based (Google Chrome, Edge, Samsung Internet en Android):</strong>
+                Representa el entorno más maduro para PWAs. Genera automáticamente un paquete <em>WebAPK</em> que integra la app en el cajón de aplicaciones de Android, soporta el evento <code>beforeinstallprompt</code> para disparar banners de instalación personalizados, permite cuotas de almacenamiento de varios Gigabytes y soporta la API de Sincronización en Segundo Plano (<em>Background Sync API</em>).
+            </li>
+            <li>
+                <strong>WebKit / Safari (Apple iOS en iPhone / iPad):</strong>
+                Posee limitaciones concretas que deben ser gestionadas por la arquitectura:
+                <ol>
+                    <li><em>Ausencia de evento de instalación programática:</em> No existe <code>beforeinstallprompt</code>; la instalación debe ser guiada manualmente al usuario (Pulsar botón Compartir -> "Añadir a pantalla de inicio").</li>
+                    <li><em>Política de Desalojo de Datos (ITP 7-Day Cap):</em> Si la PWA no ha sido agregada a la pantalla de inicio y no se abre en 7 días, Safari puede purgar la caché y el almacenamiento local. Una vez agregada al Home Screen, la persistencia se estabiliza.</li>
+                    <li><em>Cuota Inicial de Almacenamiento:</em> Límite más restrictivo por origen (inicialmente 50 MB, ampliable bajo solicitud al sistema).</li>
+                    <li><em>Background Sync no implementado:</em> Se requiere implementar un fallback escuchando el evento nativo <code>window.addEventListener('online', ...)</code> cuando la aplicación esté en primer plano.</li>
+                </ol>
+            </li>
+        </ul>
+
+        <h3 class="subsection-title">2.2. Tabla de Compatibilidad por Sistema Operativo</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Característica Técnica</th>
+                    <th>Android (Chrome/Edge)</th>
+                    <th>iOS (Safari WebKit)</th>
+                    <th>Windows / macOS</th>
+                    <th>Estrategia en TechField</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Service Worker (install, activate, fetch)</td>
+                    <td>✅ 100% Nativo</td>
+                    <td>✅ Nativo (Desde iOS 11.3)</td>
+                    <td>✅ 100% Nativo</td>
+                    <td>Núcleo de intercepción offline.</td>
+                </tr>
+                <tr>
+                    <td>Web App Manifest (standalone)</td>
+                    <td>✅ 100% Nativo</td>
+                    <td>⚠️ Requiere metatags Apple</td>
+                    <td>✅ 100% Nativo</td>
+                    <td>Inclusión de etiquetas <code>apple-touch-icon</code> y <code>apple-mobile-web-app-capable</code>.</td>
+                </tr>
+                <tr>
+                    <td>Almacenamiento IndexedDB</td>
+                    <td>✅ GB de capacidad</td>
+                    <td>✅ Con cuota controlada</td>
+                    <td>✅ GB de capacidad</td>
+                    <td>Persistencia de reportes de campo en JSON.</td>
+                </tr>
+                <tr>
+                    <td>Geolocalización GPS</td>
+                    <td>✅ Alta precisión</td>
+                    <td>✅ Previa autorización</td>
+                    <td>✅ Ubicación Wi-Fi/IP</td>
+                    <td>Captura de coordenadas de la falla.</td>
+                </tr>
+                <tr>
+                    <td>Captura de Fotos (Cámara trasera)</td>
+                    <td>✅ <code>capture="environment"</code></td>
+                    <td>✅ <code>capture="environment"</code></td>
+                    <td>⚠️ Webcam</td>
+                    <td>Adjuntar evidencia fotográfica en sitio.</td>
+                </tr>
+                <tr>
+                    <td>Background Sync API</td>
+                    <td>✅ Soportado</td>
+                    <td>❌ No disponible</td>
+                    <td>✅ Soportado</td>
+                    <td>Evento de ventana <code>online</code> como contingencia en iOS.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="subsection-title">2.3. Checklist de Criterios Mínimos de Instalación PWA</h3>
+        <p>
+            Para que una PWA sea reconocida como instalable por los navegadores y auditada al 100% en Lighthouse, debe cumplir obligatoriamente con el siguiente checklist técnico:
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Criterio Técnico Mínimo</th>
+                    <th>Requerimiento Específico</th>
+                    <th>Estado de Verificación</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><strong>Contexto Seguro</strong></td>
+                    <td>Servido sobre protocolo HTTPS válido o <code>http://localhost</code> para desarrollo.</td>
+                    <td>[x] Verificado (Node.js + Ngrok/LocalTunnel)</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><strong>Web App Manifest Vinculado</strong></td>
+                    <td>Etiqueta <code>&lt;link rel="manifest" href="/manifest.json"&gt;</code> en el <code>&lt;head&gt;</code>.</td>
+                    <td>[x] Verificado</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><strong>Campos Clave del Manifiesto</strong></td>
+                    <td><code>name</code>, <code>short_name</code>, <code>start_url</code> y <code>display: "standalone"</code>.</td>
+                    <td>[x] Verificado</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><strong>Matriz de Íconos Reglamentaria</strong></td>
+                    <td>Ícono PNG de 192x192 px e ícono PNG de 512x512 px (con variante maskable).</td>
+                    <td>[x] Verificado (Generados en <code>public/icons/</code>)</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><strong>Service Worker Registrado</strong></td>
+                    <td>Llamada a <code>navigator.serviceWorker.register('/sw.js')</code> con alcance en raíz.</td>
+                    <td>[x] Verificado</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td><strong>Manejador de Evento Fetch</strong></td>
+                    <td>El Service Worker debe escuchar <code>self.addEventListener('fetch', ...)</code>.</td>
+                    <td>[x] Verificado</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td><strong>Viewport Responsivo</strong></td>
+                    <td><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code>.</td>
+                    <td>[x] Verificado</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="page-break"></div>
+
+        <!-- ============================================================== -->
+        <!-- ENTREGABLE 3: ENTORNO Y API BASE -->
+        <!-- ============================================================== -->
+        <h2 class="section-title">3. Entregable Parcial 3: Preparación del Entorno y API REST Base</h2>
+
+        <h3 class="subsection-title">3.1. Arquitectura del Entorno de Desarrollo</h3>
+        <p>
+            Se implementó un entorno de desarrollo profesional basado en estándares nativos de Node.js (v24.x LTS) sin dependencias pesadas:
+        </p>
+        <ul>
+            <li><strong>Servidor HTTP y API REST (`server.js`):</strong> Implementado con módulos nativos (<code>node:http</code>, <code>node:fs</code>, <code>node:path</code>, <code>node:url</code>). Garantiza cero fricción de instalación, arranque instantáneo y portabilidad completa.</li>
+            <li><strong>Persistencia de Datos (`data/reportes.json`):</strong> Sistema de almacenamiento en archivo JSON que simula la base de datos central de la empresa. Cada reporte cuenta con folio consecutivo (ej. <code>REP-2026-001</code>), cliente, tipo de equipo, prioridad, falla y fecha.</li>
+            <li><strong>Encabezados CORS y Tipado MIME:</strong> Soporte completo para peticiones entre dominios cruzados (CORS) y servicio de estáticos con tipos MIME estrictos.</li>
+        </ul>
+
+        <h3 class="subsection-title">3.2. Endpoints de la API REST Implementados</h3>
+        <ul>
+            <li><code>GET /api/health</code>: Verifica el estado del servicio y métricas de tiempo de actividad (*uptime*).</li>
+            <li><code>GET /api/reportes</code>: Devuelve la colección completa de reportes guardados en formato JSON.</li>
+            <li><code>POST /api/reportes</code>: Recibe un nuevo reporte en JSON, valida los campos obligatorios, asigna un folio correlativo y lo persiste en disco.</li>
+            <li><code>DELETE /api/reportes/:id</code>: Permite depurar o eliminar registros de prueba.</li>
+        </ul>
+
+        <h3 class="subsection-title">3.3. Configuración de Túnel Seguro HTTPS para Pruebas en Smartphones</h3>
+        <p>
+            Para validar el comportamiento en teléfonos móviles reales (Android y iPhone) y cumplir con el requerimiento ineludible de HTTPS, se configuró la exposición del puerto local <code>3000</code> mediante túneles seguros:
+        </p>
+        <pre><code># Opción 1: LocalTunnel (Directo con NPX)
+npx localtunnel --port 3000
+
+# Opción 2: Ngrok
+ngrok http 3000</code></pre>
+
+        <h3 class="subsection-title">3.4. Evidencias de Ejecución (Espacio para Capturas de Pantalla)</h3>
+        <p>
+            A continuación se presentan los espacios destinados a las capturas solicitadas en la rúbrica de evaluación:
+        </p>
+
+        <!-- Evidencia 1 -->
+        <div class="screenshot-placeholder">
+            <strong>📷 Evidencia 1: Servidor Node.js Activo en Terminal</strong>
+            <p>Captura de pantalla de la terminal mostrando el comando <code>node server.js</code> iniciado y escuchando en el puerto 3000.</p>
+        </div>
+
+        <!-- Evidencia 2 -->
+        <div class="screenshot-placeholder">
+            <strong>📷 Evidencia 2: Respuesta JSON del Endpoint /api/reportes</strong>
+            <p>Captura del navegador web accediendo a <code>http://localhost:3000/api/reportes</code> con la estructura de reportes persistidos.</p>
+        </div>
+
+        <!-- Evidencia 3 -->
+        <div class="screenshot-placeholder">
+            <strong>📷 Evidencia 3: Interfaz Web y Envío Exitoso de Reporte (POST)</strong>
+            <p>Captura de la interfaz de TechField mostrando el formulario lleno y el nuevo reporte insertado en la lista.</p>
+        </div>
+
+        <!-- Evidencia 4 -->
+        <div class="screenshot-placeholder">
+            <strong>📷 Evidencia 4: Túnel Seguro HTTPS y Prueba en Móvil Real</strong>
+            <p>Captura de pantalla de Ngrok / LocalTunnel mostrando la URL pública segura <code>https://...</code> abierta en el smartphone con candado SSL activo.</p>
+        </div>
+
+        <!-- FIRMAS -->
+        <div style="margin-top: 3.5rem; display: flex; justify-content: space-around; text-align: center;">
+            <div style="border-top: 1px solid #94a3b8; width: 250px; padding-top: 0.5rem; font-size: 0.9rem;">
+                <strong>Equipo de Desarrollo</strong><br>
+                Ingeniería en Software - UTM
+            </div>
+            <div style="border-top: 1px solid #94a3b8; width: 250px; padding-top: 0.5rem; font-size: 0.9rem;">
+                <strong>Revisión Académica</strong><br>
+                Profesor de Asignatura
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+

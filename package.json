@@ -1,0 +1,21 @@
+{
+  "name": "techfield-pwa",
+  "version": "1.0.0",
+  "description": "Prototipo funcional PWA para levantamiento de reportes de servicio técnico en campo con persistencia offline",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "generate-icons": "node scripts/generate-icons.js"
+  },
+  "keywords": [
+    "pwa",
+    "progressive-web-app",
+    "service-worker",
+    "offline-first",
+    "indexeddb",
+    "lighthouse"
+  ],
+  "author": "Equipo de Desarrollo - UTM",
+  "license": "MIT"
+}

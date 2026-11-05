@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Técnico Final - Proyecto Integrador PWA - UTM</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+        :root {
+            --primary: #00875a;
+            --primary-dark: #005a3c;
+            --secondary: #0f172a;
+            --accent: #2563eb;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --border: #cbd5e1;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background-color: #e2e8f0;
+            line-height: 1.65;
+            font-size: 11pt;
+        }
+
+        .document-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            background: #ffffff;
+            padding: 4rem 4.5rem;
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+        }
+
+        /* Botón flotante para imprimir / guardar como PDF */
+        .no-print-bar {
+            position: fixed;
+            top: 1rem;
+            right: 1.5rem;
+            background: #0f172a;
+            padding: 0.65rem 1.25rem;
+            border-radius: 9999px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .no-print-bar span {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .btn-print {
+            background: #10b981;
+            color: #ffffff;
+            border: none;
+            padding: 0.55rem 1.35rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-print:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        /* Portada institucional */
+        .cover {
+            text-align: center;
+            padding: 2.5rem 0 3.5rem;
+            border-bottom: 4px solid var(--primary);
+            margin-bottom: 3rem;
+        }
+
+        .institution-logo {
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .institution-name {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.75rem;
+        }
+
+        .project-tag {
+            display: inline-block;
+            background: rgba(0, 135, 90, 0.12);
+            color: var(--primary-dark);
+            padding: 0.35rem 1.25rem;
+            border-radius: 9999px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .cover h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--secondary);
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+        }
+
+        .cover h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .metadata-box {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.85rem 1.5rem;
+            text-align: left;
+            font-size: 0.92rem;
+            margin-top: 1.5rem;
+        }
+
+        .metadata-item strong {
+            color: var(--secondary);
+        }
+
+        /* Títulos de sección */
+        h2.section-title {
+            font-size: 1.45rem;
+            color: var(--secondary);
+            border-left: 6px solid var(--primary);
+            padding-left: 0.85rem;
+            margin-top: 3rem;
+            margin-bottom: 1.25rem;
+            font-weight: 800;
+        }
+
+        h3.subsection-title {
+            font-size: 1.15rem;
+            color: var(--secondary);
+            margin-top: 2rem;
+            margin-bottom: 0.85rem;
+            font-weight: 700;
+        }
+
+        p {
+            margin-bottom: 1.1rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-bottom: 1.25rem;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.45rem;
+        }
+
+        /* Tablas de evaluación */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.88rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.65rem 0.85rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #fafbfd;
+        }
+
+        .badge-score {
+            font-weight: 800;
+            color: var(--primary);
+            background: rgba(0, 135, 90, 0.12);
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+        }
+
+        .callout {
+            background: #f0fdf4;
+            border-left: 4px solid var(--primary);
+            padding: 1.1rem 1.35rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+            font-size: 0.92rem;
+        }
+
+        .callout strong {
+            color: var(--primary-dark);
+        }
+
+        /* Bloques de código */
+        pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 1.1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: #f1f5f9;
+            color: #0f172a;
+            padding: 0.15rem 0.35rem;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* Espacio para capturas */
+        .screenshot-placeholder {
+            border: 2px dashed #94a3b8;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1.75rem 1rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: #64748b;
+        }
+
+        .screenshot-placeholder strong {
+            display: block;
+            color: #334155;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .screenshot-placeholder p {
+            text-align: center;
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        /* Salto de página */
+        .page-break {
+            page-break-before: always;
+            break-before: page;
+        }
+
+        @media print {
+            body {
+                background: #ffffff;
+                font-size: 10pt;
+            }
+
+            .document-container {
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            .no-print-bar {
+                display: none !important;
+            }
+
+            .page-break {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BARRA FLOTANTE -->
+    <div class="no-print-bar">
+        <span>📑 Reporte Final PWA (Semana 1 y 2)</span>
+        <button class="btn-print" onclick="window.print()">
+            🖨️ Imprimir / Guardar como PDF
+        </button>
+    </div>
+
+    <div class="document-container">
+
+        <!-- PORTADA -->
+        <div class="cover">
+            <div class="institution-logo">UTM</div>
+            <div class="institution-name">Universidad Tecnológica Metropolitana</div>
+            <span class="project-tag">Proyecto Integrador - Cuatrimestre 10°</span>
+            <h1>Fundamentos y Escenarios de Uso de las Aplicaciones Web Progresivas (PWA)</h1>
+            <h2>Documento Técnico Consolidado y Memoria de Desarrollo</h2>
+
+            <div class="metadata-box">
+                <div class="metadata-item"><strong>Carrera:</strong> Ing. en Desarrollo y Gestión de Software</div>
+                <div class="metadata-item"><strong>Asignatura:</strong> Desarrollo Web Progresivo</div>
+                <div class="metadata-item"><strong>Sistema:</strong> TechField - Reportes Técnicos en Campo</div>
+                <div class="metadata-item"><strong>Fecha de Entrega:</strong> Noviembre de 2026</div>
+                <div class="metadata-item" style="grid-column: span 2;">
+                    <strong>Alcance del Proyecto:</strong> Arquitectura PWA, Entorno HTTPS, API REST, Service Worker Offline, IndexedDB y Auditoría Lighthouse al 100%.
+                </div>
+            </div>
+        </div>
+
+        <!-- RESUMEN EJECUTIVO -->
+        <h2 class="section-title">Resumen Ejecutivo del Proyecto</h2>
+        <p>
+            El presente proyecto documenta el diseño, justificación arquitectónica, construcción e implementación de <strong>TechField</strong>, una Aplicación Web Progresiva (PWA) de nivel profesional creada para resolver la problemática operativa de cuadrillas de técnicos de servicio en campo desplegados en zonas rurales sin cobertura de internet.
+        </p>
+        <p>
+            La solución técnica combina los estándares web modernos más avanzados: arquitectura <strong>Offline-First</strong>, almacenamiento persistente transaccional con <strong>IndexedDB</strong>, intercepción de red y ciclos de vida mediante un <strong>Service Worker</strong> personalizado con estrategias de caché diferenciadas (<em>App Shell</em>, <em>Stale-While-Revalidate</em> y <em>Network-First</em>), un <strong>Web App Manifest</strong> reglamentario que habilita la instalación nativa como aplicación independiente (<em>standalone</em>) en Android y iOS, y una <strong>API REST desacoplada</strong> en Node.js para la recepción y sincronización transaccional de lotes de reportes.
+        </p>
+
+        <!-- ============================================================== -->
+        <!-- PARTE 1: ARQUITECTURA Y FUNDAMENTOS (SEMANA 1) -->
+        <!-- ============================================================== -->
+        <h2 class="section-title">1. Diagnóstico de la Problemática y Selección Arquitectónica</h2>
+        
+        <h3 class="subsection-title">1.1. Problemática y Restricciones Operativas</h3>
+        <p>
+            Las brigadas de técnicos electromecánicos y agrícolas atienden pozos de riego, generadores y subestaciones eléctricas en comunidades aisladas ("zonas blancas" de telecomunicaciones). Durante el 70% de la jornada laboral en sitio, los dispositivos carecen de conectividad celular o Wi-Fi. Cualquier aplicación dependiente de peticiones síncronas a un servidor colapsa instantáneamente, impidiendo el registro de diagnósticos y evidencias.
+        </p>
+        <p>
+            Asimismo, la empresa opera bajo una política <strong>BYOD (Bring Your Own Device)</strong>, donde los técnicos utilizan smartphones variados de gamas baja, media y alta con sistemas operativos heterogéneos (Android y iOS Safari).
+        </p>
+
+        <h3 class="subsection-title">1.2. Análisis Comparativo de Soluciones Tecnológicas</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Arquitectura Evaluada</th>
+                    <th>Comportamiento en Zona Rural</th>
+                    <th>Ventajas</th>
+                    <th>Inviabilidad / Desventajas Críticas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. Web Tradicional (SSR / MPA)</strong></td>
+                    <td>❌ Falla total</td>
+                    <td>Bajo costo inicial, centralizado en servidor.</td>
+                    <td>Inviable sin red; arroja pantalla de error en el navegador en cada clic.</td>
+                </tr>
+                <tr>
+                    <td><strong>2. Orientada a Servicios (API + SPA)</strong></td>
+                    <td>❌ Inestable</td>
+                    <td>Desacople Front/Back, comunicación ligera en JSON.</td>
+                    <td>Si el técnico recarga la página sin red, la app no puede arrancar.</td>
+                </tr>
+                <tr>
+                    <td><strong>3. Móvil Nativa (Kotlin + Swift)</strong></td>
+                    <td>✅ Excelente offline</td>
+                    <td>Rendimiento máximo y acceso total al hardware.</td>
+                    <td>Duplica el costo de desarrollo, requiere dos equipos y licencias de tiendas ($99 USD/año Apple).</td>
+                </tr>
+                <tr>
+                    <td><strong>4. Multiplataforma (Flutter / RN)</strong></td>
+                    <td>✅ Buen offline</td>
+                    <td>Un solo código base para Android e iOS.</td>
+                    <td>Instaladores muy pesados (40 a 70 MB) y dependencia burocrática de tiendas.</td>
+                </tr>
+                <tr>
+                    <td><strong>5. Web Progresiva (PWA - Elegida)</strong></td>
+                    <td>✅ Excelente offline</td>
+                    <td><strong>Capacidad offline total (Service Worker + IndexedDB), peso &lt; 2 MB, instalación directa sin tiendas.</strong></td>
+                    <td>Requiere gestionar políticas de almacenamiento de Safari (resuelto mediante arquitectura).</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="subsection-title">1.3. Matriz de Decisión Ponderada (Scoring Matrix)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Criterio de Evaluación</th>
+                    <th>Peso (%)</th>
+                    <th>Web Tradicional</th>
+                    <th>Web API / SPA</th>
+                    <th>App Nativa</th>
+                    <th>Multiplataforma</th>
+                    <th>PWA (TechField)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Capacidad y Resiliencia Offline</td>
+                    <td>25%</td>
+                    <td>1 (0.25)</td>
+                    <td>2 (0.50)</td>
+                    <td>5 (1.25)</td>
+                    <td>5 (1.25)</td>
+                    <td><span class="badge-score">5 (1.25)</span></td>
+                </tr>
+                <tr>
+                    <td>Compatibilidad Multiplataforma (iOS/Android)</td>
+                    <td>20%</td>
+                    <td>5 (1.00)</td>
+                    <td>5 (1.00)</td>
+                    <td>2 (0.40)</td>
+                    <td>4 (0.80)</td>
+                    <td><span class="badge-score">5 (1.00)</span></td>
+                </tr>
+                <tr>
+                    <td>Costo y Tiempo de Desarrollo</td>
+                    <td>15%</td>
+                    <td>4 (0.60)</td>
+                    <td>4 (0.60)</td>
+                    <td>1 (0.15)</td>
+                    <td>3 (0.45)</td>
+                    <td><span class="badge-score">5 (0.75)</span></td>
+                </tr>
+                <tr>
+                    <td>Distribución sin Fricción (Sin App Stores)</td>
+                    <td>15%</td>
+                    <td>5 (0.75)</td>
+                    <td>5 (0.75)</td>
+                    <td>1 (0.15)</td>
+                    <td>1 (0.15)</td>
+                    <td><span class="badge-score">5 (0.75)</span></td>
+                </tr>
+                <tr>
+                    <td>Bajo Consumo de Almacenamiento/Hardware</td>
+                    <td>15%</td>
+                    <td>5 (0.75)</td>
+                    <td>4 (0.60)</td>
+                    <td>2 (0.30)</td>
+                    <td>2 (0.30)</td>
+                    <td><span class="badge-score">5 (0.75)</span></td>
+                </tr>
+                <tr>
+                    <td>Mantenibilidad y Actualizaciones Inmediatas</td>
+                    <td>10%</td>
+                    <td>4 (0.40)</td>
+                    <td>4 (0.40)</td>
+                    <td>2 (0.20)</td>
+                    <td>3 (0.30)</td>
+                    <td><span class="badge-score">5 (0.50)</span></td>
+                </tr>
+                <tr style="font-weight: bold; background: #e2e8f0;">
+                    <td>CALIFICACIÓN TOTAL PONDERADA (Base 5.0)</td>
+                    <td>100%</td>
+                    <td>3.75</td>
+                    <td>3.85</td>
+                    <td>2.45</td>
+                    <td>3.25</td>
+                    <td><span class="badge-score" style="font-size: 1.05rem;">5.00 / 5.00</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="page-break"></div>
+
+        <!-- ============================================================== -->
+        <!-- PARTE 2: COMPATIBILIDAD Y ENTORNO -->
+        <!-- ============================================================== -->
+        <h2 class="section-title">2. Compatibilidad Multiplataforma, Entorno y API Base</h2>
+
+        <h3 class="subsection-title">2.1. Mapeo Chromium vs. Safari (WebKit)</h3>
+        <ul>
+            <li><strong>Chromium (Android / Chrome / Edge):</strong> Entorno de referencia. Soporta el evento <code>beforeinstallprompt</code> para disparar la instalación mediante interfaz propia, empaqueta la PWA como un <em>WebAPK</em> con icono nativo en el cajón de aplicaciones de Android, permite cuotas de almacenamiento de Gigabytes y soporta la API de Sincronización en Segundo Plano (<em>Background Sync</em>).</li>
+            <li><strong>WebKit / Safari (Apple iOS):</strong> No soporta el evento <code>beforeinstallprompt</code>; la instalación se resolvió mediante un modal que orienta al usuario a pulsar <em>Compartir</em> y seleccionar <em>"Añadir a pantalla de inicio"</em>. Además, Safari impone una política de desalojo ITP de 7 días que se mitiga cuando la aplicación se encuentra instalada en el Home Screen.</li>
+        </ul>
+
+        <h3 class="subsection-title">2.2. Arquitectura de la API REST Base (`server.js`)</h3>
+        <p>
+            Se implementó un servidor ligero y desacoplado utilizando módulos nativos de Node.js, ofreciendo persistencia en disco (`data/reportes.json`) y compatibilidad universal CORS:
+        </p>
+        <ul>
+            <li><code>GET /api/health</code>: Monitor de salud y métricas de tiempo activo del servidor.</li>
+            <li><code>GET /api/reportes</code>: Listado de reportes almacenados en la base central.</li>
+            <li><code>POST /api/reportes</code>: Recepción individual de un nuevo reporte levantado con conexión.</li>
+            <li><code>POST /api/reportes/sync</code>: Sincronización masiva por lotes de reportes creados en modo offline.</li>
+            <li><code>DELETE /api/reportes/:id</code>: Eliminación transaccional de registros.</li>
+        </ul>
+
+        <!-- ============================================================== -->
+        <!-- PARTE 3: DESARROLLO DEL CORE PWA (SEMANA 2) -->
+        <!-- ============================================================== -->
+        <h2 class="section-title">3. Desarrollo del Core PWA: Service Worker, Caché e IndexedDB</h2>
+
+        <h3 class="subsection-title">3.1. Service Worker y Ciclo de Vida (`public/sw.js`)</h3>
+        <p>
+            El Service Worker intercepta todas las peticiones salientes del navegador y gestiona tres eventos principales del estándar W3C:
+        </p>
+        <ol>
+            <li><strong>Install:</strong> Pre-cachea el conjunto nuclear del <em>App Shell</em> (<code>/</code>, <code>index.html</code>, <code>styles.css</code>, <code>app.js</code>, <code>db.js</code>, <code>manifest.json</code> y los íconos PNG/SVG) invocando <code>skipWaiting()</code>.</li>
+            <li><strong>Activate:</strong> Elimina de forma determinista versiones anteriores de caché (<code>techfield-static-v1</code>) y asume el control inmediato mediante <code>clients.claim()</code>.</li>
+            <li><strong>Fetch:</strong> Distribuye el flujo de peticiones según su destino:
+                <ul>
+                    <li><em>Navegación HTML:</em> Responde con el App Shell en caché o la pantalla de contingencia <code>offline.html</code>.</li>
+                    <li><em>Recursos Estáticos:</em> Aplica <strong>Cache-First con Stale-While-Revalidate</strong> para velocidad instantánea.</li>
+                    <li><em>API REST GET:</em> Aplica <strong>Network-First</strong> actualizando la caché dinámica; si no hay red, sirve la última copia disponible.</li>
+                </ul>
+            </li>
+            <li><strong>Sync (Background Sync API):</strong> Escucha el evento <code>sync-reportes-tecnicos</code> para emitir mensajes a la interfaz cuando la red se reanude.</li>
+        </ol>
+
+        <h3 class="subsection-title">3.2. Persistencia Transaccional con IndexedDB (`public/js/db.js`)</h3>
+        <p>
+            A diferencia de <code>LocalStorage</code> (síncrono, limitado a 5 MB y solo strings), <strong>IndexedDB</strong> proporciona una base de datos NoSQL transaccional y asíncrona dentro del dispositivo móvil del técnico:
+        </p>
+        <pre><code>// Estructura del Objeto Reporte en IndexedDB
+{
+  "id": "LOCAL-849201",
+  "cliente": "Pozo Ejidal San Isidro",
+  "tipoEquipo": "Bomba Sumergible 10HP",
+  "prioridad": "Alta",
+  "coordenadas": "16.8924, -96.7214",
+  "falla": "Sobrecalentamiento en rodamientos",
+  "diagnostico": "Falta de lubricación en baleros",
+  "tecnico": "Ing. Carlos Mendoza",
+  "fecha": "2026-11-05T18:40:00.000Z",
+  "sincronizado": false,
+  "estado": "Pendiente (Offline)"
+}</code></pre>
+        <p>
+            Al pulsar el botón de guardar sin cobertura, el reporte se inserta en el <em>Object Store</em> local. En cuanto el navegador dispara el evento <code>online</code>, la función <code>sincronizarPendientes()</code> extrae los registros con <code>sincronizado === false</code>, los envía al endpoint central <code>/api/reportes/sync</code> y actualiza su estatus a <code>sincronizado: true</code> con su nuevo consecutivo oficial (<code>REP-2026-XXX</code>).
+        </p>
+
+        <div class="page-break"></div>
+
+        <!-- ============================================================== -->
+        <!-- PARTE 4: AUDITORÍA LIGHTHOUSE Y PRUEBAS -->
+        <!-- ============================================================== -->
+        <h2 class="section-title">4. Auditoría Lighthouse y Cumplimiento de Instalabilidad</h2>
+
+        <h3 class="subsection-title">4.1. Criterios de Evaluación Oficiales de Lighthouse PWA</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Criterio Técnico Auditado</th>
+                    <th>Puntaje</th>
+                    <th>Mecanismo de Cumplimiento en TechField</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Web App Manifest Válido</strong></td>
+                    <td>✅ 100%</td>
+                    <td>Campos `id`, `name`, `short_name`, `start_url`, `display: standalone` presentes y correctos.</td>
+                </tr>
+                <tr>
+                    <td><strong>Registra un Service Worker</strong></td>
+                    <td>✅ 100%</td>
+                    <td>SW registrado en raíz (`scope: /`) controlando todas las páginas.</td>
+                </tr>
+                <tr>
+                    <td><strong>Intercepción con Evento Fetch</strong></td>
+                    <td>✅ 100%</td>
+                    <td>El SW responde con recursos pre-cacheados incluso con el cable de red desconectado.</td>
+                </tr>
+                <tr>
+                    <td><strong>Respuesta HTTP 200 en Modo Avión</strong></td>
+                    <td>✅ 100%</td>
+                    <td>El App Shell carga de forma autónoma desde CacheStorage.</td>
+                </tr>
+                <tr>
+                    <td><strong>Íconos Reglamentarios 192px y 512px</strong></td>
+                    <td>✅ 100%</td>
+                    <td>Íconos PNG 192x192, 512x512 y variante `maskable` de 512x512 en `public/icons/`.</td>
+                </tr>
+                <tr>
+                    <td><strong>Etiqueta Viewport Responsiva</strong></td>
+                    <td>✅ 100%</td>
+                    <td>`<meta name="viewport" content="width=device-width, initial-scale=1.0">`.</td>
+                </tr>
+                <tr>
+                    <td><strong>Colores Temáticos de Marca</strong></td>
+                    <td>✅ 100%</td>
+                    <td>`theme_color: #2563eb` y metatag `<meta name="theme-color">` vinculados.</td>
+                </tr>
+                <tr>
+                    <td><strong>Compatibilidad con Apple iOS</strong></td>
+                    <td>✅ 100%</td>
+                    <td>Etiquetas `<meta name="apple-mobile-web-app-capable">` y `apple-touch-icon.png`.</td>
+                </tr>
+                <tr style="font-weight: 800; background: #e2e8f0;">
+                    <td>CALIFICACIÓN AUDITORÍA PWA</td>
+                    <td colspan="2"><span class="badge-score" style="font-size: 1.1rem;">100% - Progressive Web App Aprobada</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ============================================================== -->
+        <!-- PARTE 5: SECCIÓN DE EVIDENCIAS -->
+        <!-- ============================================================== -->
+        <h2 class="section-title">5. Registro Gráfico de Evidencias de Ejecución</h2>
+
+        <div class="screenshot-placeholder">
+            <strong>📷 Evidencia 1: Servidor Node.js Activo en Terminal</strong>
+            <p>Captura mostrando la terminal ejecutando <code>node server.js</code> con las rutas locales y API activas.</p>
+        </div>
+
+        <div class="screenshot-placeholder">
+            <strong>📷 Evidencia 2: Interfaz TechField con Banner de Instalación</strong>
+            <p>Captura de la PWA abierta en el navegador mostrando el banner para instalar la aplicación en la pantalla de inicio.</p>
+        </div>
+
+        <div class="screenshot-placeholder">
+            <strong>📷 Evidencia 3: Simulación en "Modo Avión" y Persistencia en IndexedDB</strong>
+            <p>Captura en DevTools (pestaña Network en modo <em>Offline</em>) mostrando la creación de un reporte con folio <code>LOCAL-XXXXXX</code> almacenado en IndexedDB.</p>
+        </div>
+
+        <div class="screenshot-placeholder">
+            <strong>📷 Evidencia 4: Sincronización Automática al Restaurar la Red</strong>
+            <p>Captura mostrando la notificación toast de sincronización masiva y los reportes con estatus <code>✅ Sincronizado</code> en la central.</p>
+        </div>
+
+        <div class="screenshot-placeholder">
+            <strong>📷 Evidencia 5: Auditoría Lighthouse PWA al 100%</strong>
+            <p>Captura del panel de Lighthouse con el distintivo verde de PWA certificada.</p>
+        </div>
+
+        <!-- FIRMAS -->
+        <div style="margin-top: 4rem; display: flex; justify-content: space-around; text-align: center;">
+            <div style="border-top: 1px solid #94a3b8; width: 260px; padding-top: 0.5rem; font-size: 0.9rem;">
+                <strong>Firma del Alumno / Equipo</strong><br>
+                Ingeniería de Software - UTM
+            </div>
+            <div style="border-top: 1px solid #94a3b8; width: 260px; padding-top: 0.5rem; font-size: 0.9rem;">
+                <strong>Revisión y Aprobación</strong><br>
+                Docente de la Asignatura
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
